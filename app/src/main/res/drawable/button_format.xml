@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!--
+item avec state_pressed="true" doit être définit en premier
+Un style de type Layout (xml) ne fonction qu'avec
+androidx.appcompat.widget.AppCompatButton
+
+-->
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/white"/>
+            <corners android:radius="150dp"/>
+            <stroke android:color="@color/black" android:width="5dp"/>
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <solid android:color="@color/red"/>
+            <corners android:radius="150dp"/>
+            <stroke android:color="@color/black" android:width="5dp"/>
+        </shape>
+    </item>
+
+</selector>
