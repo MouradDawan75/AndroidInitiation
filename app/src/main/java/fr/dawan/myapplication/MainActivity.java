@@ -1,22 +1,39 @@
 package fr.dawan.myapplication;
 
+import static android.content.Intent.CATEGORY_BROWSABLE;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
     //Déclaration de tous es composants graphiques
 
     Button btnCycleVieActivity;
+
+    //Déclaration de l'ActivityForResult
+    ActivityResultLauncher<Intent> imageResultat;
 
 
 
@@ -80,6 +97,39 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //Enregistrement de l'ActivityForResult implicte: action exécutée par Android
+        imageResultat = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == RESULT_OK){
+                            Intent data = result.getData();
+
+                            //getExtras() car il s'agit d'un type complèxe
+                            //Le système Android utilise par défaut a clé data
+                            Bitmap image = (Bitmap) data.getExtras().get("data");
+                            ImageView iv = findViewById(R.id.iv_cature);
+                            iv.setImageBitmap(image);
+
+                            //Sauvegarde de l'image
+                            try {
+                                //getFilesDirectiry: renvoie la racine du projet (nom du package)
+                                Log.i(">>>chemin", ""+getFilesDir());
+                                File f = new File(getFilesDir()+"/test.png");
+                                FileOutputStream fis = new FileOutputStream(f);
+                                image.compress(Bitmap.CompressFormat.PNG, 90,fis);
+                                fis.close();
+                                Toast.makeText(MainActivity.this,"Image sauvegardée", Toast.LENGTH_LONG).show();
+
+                            }catch (Exception e){
+                                Log.i(">>>Erreur", e.getMessage());
+                                Toast.makeText(MainActivity.this,"Erreur", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+
     }
 
 
@@ -89,5 +139,72 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+   // Intent Implicite: Ouverture d'une URL
+    // Si aucun résultat: ajoutez la permission <uses-permission ...Internet/> dans le manifest.xml
+    public void btnOpenUrlClick(View view) {
+        /*
+        Plusieurs bugs possibes sur un émulateur.
+        A tester de préference sur un téléphone physique
+         */
+        /*
+        String url = "https://www.google.fr";
+        Intent urlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(urlIntent);
 
+         */
+        Toast.makeText(MainActivity.this,"A tester sur tél. physique", Toast.LENGTH_LONG).show();
+    }
+
+    //Intent implicite: appel téléphonique
+    // Permission dans manifest.xml: CALL_PHONE
+    public void btnCallClick(View view) {
+        //Dans uri.parse, il faut respecter la syntaxe: utilisation du mot clé tel:
+        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:0606060606"));
+        startActivity(callIntent);
+    }
+
+    //Intent implicite: Send SMS
+    //Permission: SEND_SMS
+    public void btnSmsClick(View view) {
+        //Dans uri.parse, il faut respecter la syntaxe: utilisation du mot clé smsto:
+        Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:0606060606"));
+        smsIntent.putExtra("sms_body","hello, blabla......");
+        startActivity(smsIntent);
+    }
+
+    //Intent implicite:
+    //Permission: INTERNET
+    public void btnEmailClick(View view) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO,Uri.parse("mailto:mmahrane@dawan.fr"));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT,"test email....");
+        emailIntent.putExtra(Intent.EXTRA_TEXT,"contenu de l'email....");
+        //startActivity(emailIntent);
+
+        //Syntaxe à utiliser pour compte gmail configuré sur le tél (emulateur ou physique)
+        Intent intent2 = new Intent(Intent.ACTION_SENDTO,
+                Uri.parse("mailto:?subject="+"sujet du mail"+"&to="+"mmahrane@dawan.fr"+"&body= contenu du mail.."));
+        startActivity(intent2);
+    }
+
+    //Intent de type ActivityForResult
+    //Permt de déleguer certaines tâches à 1 Activity intermédiaire et la fin de la tâche
+    //cette dernière est censée renvoyer un résultat à l'Activty appelante
+    public void btnIntentClick(View view) {
+        Intent i = new Intent(MainActivity.this, IntentForResult.class);
+        startActivity(i);
+    }
+
+    //ActivityForResult implicite
+    //Permission: CAMERA
+    public void btnCaptureClick(View view) {
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        imageResultat.launch(intent);
+    }
+
+    //Manipulation de ListView
+    public void btnListClick(View view) {
+        Intent listIntent = new Intent(MainActivity.this, MyListActivity.class);
+        startActivity(listIntent);
+    }
 }

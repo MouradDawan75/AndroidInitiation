@@ -5,8 +5,8 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
         <!--  Primary Color-->
-        <item name="colorPrimary">@color/green_dark</item>
-        <item name="colorPrimaryVariant">@color/green_light</item>
+        <item name="colorPrimary">@color/blue_dark</item>
+        <item name="colorPrimaryVariant">@color/blue_light</item>
 
 
         <!--texte et icône -->

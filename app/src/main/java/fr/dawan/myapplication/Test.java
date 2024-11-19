@@ -19,7 +19,7 @@ public class Test {
 
     //méthode (static) de classe
     public static void methode2() {
-
+        Test t = new Test();
     }
     /*
     3 types d'erreurs possibles dans un code:
@@ -31,3 +31,13 @@ public class Test {
     Pour gérer une exception, on utilise e bloc try/catch
      */
 }
+/*
+Une classe est un type de données. Elle a pour tâche principale de décrire la structure d'un objet. Elle définie
+une sorte de template à partir duquel on crée nos objet.
+Elle contient généralement 3 choses:
+- Attributs - propriétés de l'objet (privés + geter/setter)
+- Des méthodes
+- Une méthode spéciale qui porte le nom de classe, appelée constructeur qui permet d'instancier (créer des objets) à partir
+de la classe en question.
+
+ */

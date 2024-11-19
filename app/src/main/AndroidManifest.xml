@@ -2,6 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,22 +25,29 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".MyListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".IntentForCalcul"
+            android:exported="false" />
+        <activity
+            android:name=".IntentForResult"
+            android:exported="false" />
+        <activity
             android:name=".ImcActivity"
-            android:label="Imc Calcul"
-            android:exported="false">
-
+            android:exported="false"
+            android:label="Imc Calcul">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
-
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".CycleVieActivity"
-            android:label="Cycle de vie"
-            android:exported="false" >
+            android:exported="false"
+            android:label="Cycle de vie">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".MainActivity"

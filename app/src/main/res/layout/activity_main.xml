@@ -24,5 +24,53 @@
         android:onClick="btnImcCalcul"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Implicite Intent (Open URL)"
+        android:onClick="btnOpenUrlClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Implicite Intent (CALL)"
+        android:onClick="btnCallClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Implicite Intent (Send SMS)"
+        android:onClick="btnSmsClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Implicite Intent (Send EMAIL)"
+        android:onClick="btnEmailClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ActivityForResult Explicite"
+        android:onClick="btnIntentClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ActivityForResult Implicite (Image Capture)"
+        android:onClick="btnCaptureClick"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:id="@+id/iv_cature"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ListView Example"
+        android:onClick="btnListClick"/>
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>
