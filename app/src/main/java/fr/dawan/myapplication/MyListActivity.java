@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.dawan.myapplication.dialogs.ProductDialog;
 import fr.dawan.myapplication.dialogs.StringDialogList;
 import fr.dawan.myapplication.entities.Product;
 
@@ -60,6 +61,41 @@ public class MyListActivity extends AppCompatActivity {
         myProdAdapter = new ArrayAdapter<>(MyListActivity.this, android.R.layout.simple_list_item_1, products);
         lv.setAdapter(myProdAdapter);
 
+        //Gestion du clic du btn_ajouter: afficher une dialogue perso
+        /*
+        1- Définir un layout
+        2- Le désérialiser dans une classe qui hérite de la DialogFragment
+         */
+
+        findViewById(R.id.btn_listview_ajouter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProductDialog dialog = new ProductDialog();
+                dialog.show(getSupportFragmentManager(), "dialog2");
+            }
+        });
+
+        //Clic sur un item de ListView
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Récuperer le product sélectionné
+                // l'afficher dans la dialogue: soit pour une modif - soit pour une suppression
+                Product prodSelectionne = myProdAdapter.getItem(position);
+
+                ProductDialog dialog = new ProductDialog();
+
+                //Fournir le prodSelectionné à la dialog
+                Bundle b = new Bundle();
+                b.putSerializable("prod", prodSelectionne); //putSerialisable: permet d'injecter des objets
+                b.putInt("selectedItemPosition", position);
+
+                dialog.setArguments(b);
+
+                dialog.show(getSupportFragmentManager(),"dialog3");
+
+            }
+        });
 
     }
 
@@ -131,5 +167,31 @@ public class MyListActivity extends AppCompatActivity {
     public void addString(String contenu) {
         myStringAdapter.add(contenu);
         myStringAdapter.notifyDataSetChanged(); //actualiser la ListView
+    }
+
+    public void addProduct(Product p, int selectedPosition) {
+        if(selectedPosition == -1){
+            //Ajout
+            myProdAdapter.add(p);
+        }else{
+            //Modification
+            myProdAdapter.getItem(selectedPosition).setId(p.getId());
+            myProdAdapter.getItem(selectedPosition).setDescription(p.getDescription());
+            myProdAdapter.getItem(selectedPosition).setPrice(p.getPrice());
+        }
+
+        //Actualiser la ListView
+        myProdAdapter.notifyDataSetChanged();
+    }
+
+    public void deleteProduct(int selectedPosition) {
+        //Récupérer le product à supprimer
+        Product prodToDelete = myProdAdapter.getItem(selectedPosition);
+
+        //Le supprimer dans l'adapter
+        myProdAdapter.remove(prodToDelete);
+
+        //Actualiser ListView
+        myProdAdapter.notifyDataSetChanged();
     }
 }

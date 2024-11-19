@@ -1,6 +1,9 @@
 package fr.dawan.myapplication.entities;
 
-public class Product {
+import java.io.Serializable;
+
+//Les objets de type Product peuvent être sérialiser
+public class Product implements Serializable {
 
     //Attributs doivent être en privés
     private int id;

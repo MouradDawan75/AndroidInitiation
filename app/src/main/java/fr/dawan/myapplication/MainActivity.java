@@ -26,7 +26,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     //Déclaration de tous es composants graphiques
 
@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         //Pour chaque ressource, l'IDE génère un ID (un entier)
 
         setContentView(R.layout.activity_main);
+
+        //Attacher le bouton quitter
+        attacherBoutonQuitter();
 
         /*
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("password", "@admin@");
 
 
-                Toast.makeText(MainActivity.this, "Données tansmises", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Données transmises", Toast.LENGTH_LONG).show();
 
                 //Données complèxes: objets - l'utilisation d'un Bundle est nécessaire
 
@@ -206,5 +209,11 @@ public class MainActivity extends AppCompatActivity {
     public void btnListClick(View view) {
         Intent listIntent = new Intent(MainActivity.this, MyListActivity.class);
         startActivity(listIntent);
+    }
+
+    //Manipulation d'un Spinner
+    public void btnSpinnerClick(View view) {
+        Intent intent = new Intent(MainActivity.this, SpinnerActivity.class);
+        startActivity(intent);
     }
 }

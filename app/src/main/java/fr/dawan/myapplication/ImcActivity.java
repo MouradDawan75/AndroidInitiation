@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
-public class ImcActivity extends AppCompatActivity {
+public class ImcActivity extends BaseActivity {
 
     //Pour les ressources statiques de types fichiers: texte, html,.....etc
     //Générez le dossier asset -> clic droit sur app -> new -> folder -> asset
@@ -37,6 +37,8 @@ public class ImcActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //EdgeToEdge.enable(this);
         setContentView(R.layout.activity_imc);
+
+        attacherBoutonQuitter();
 
         /*
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

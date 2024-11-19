@@ -72,5 +72,16 @@
         android:text="ListView Example"
         android:onClick="btnListClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Spinner Example"
+        android:onClick="btnSpinnerClick"/>
+
+
+
+    <include layout="@layout/layout_bouton_quitter"/>
+
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

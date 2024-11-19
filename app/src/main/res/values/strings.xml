@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">My Application</string>
+
+    <!--Tableau de chaines-->
+    <string-array name="countries">
+        <item>France</item>
+        <item>Italie</item>
+        <item>Espagne</item>
+        <item>USA</item>
+    </string-array>
 </resources>
