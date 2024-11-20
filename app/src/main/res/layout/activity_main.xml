@@ -93,6 +93,12 @@
         android:text="Cart Exo"
         android:onClick="btnCartClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quiz Exo"
+        android:onClick="btnQuizClick"/>
+
 
 
     <include layout="@layout/layout_bouton_quitter"/>

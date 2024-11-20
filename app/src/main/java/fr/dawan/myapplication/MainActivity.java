@@ -235,4 +235,9 @@ public class MainActivity extends BaseActivity {
         Intent cartIntent = new Intent(MainActivity.this, OrderActivity.class);
         startActivity(cartIntent);
     }
+
+    //Exo Quiz
+    public void btnQuizClick(View view) {
+        startActivity(new Intent(MainActivity.this, QuizActivity.class));
+    }
 }
