@@ -36,6 +36,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/buttonStyle"
         android:text="Implicite Intent (Open URL)"
         android:onClick="btnOpenUrlClick"/>
 
@@ -86,12 +87,6 @@
         android:layout_height="wrap_content"
         android:text="Spinner Example"
         android:onClick="btnSpinnerClick"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cart Exo"
-        android:onClick="btnCartClick"/>
 
 
 

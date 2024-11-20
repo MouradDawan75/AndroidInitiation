@@ -13,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class SpinnerActivity extends AppCompatActivity {
+public class SpinnerActivity extends BaseActivity {
 
     Spinner mySpinner;
     ArrayAdapter adapter;

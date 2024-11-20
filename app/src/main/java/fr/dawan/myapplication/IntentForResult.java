@@ -17,7 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class IntentForResult extends AppCompatActivity {
+public class IntentForResult extends BaseActivity {
 
     EditText edNombre1, edNombre2;
     TextView tvResultatRenvoye;

@@ -26,9 +26,21 @@ import androidx.core.view.WindowInsetsCompat;
 import java.io.File;
 import java.io.FileOutputStream;
 
+/*
+Gestion des layout pour les différentes tailles d'écran:
+lien doc: https://android-developers.googleblog.com/2011/07/new-tools-for-managing-screen-sizes.html
+Typical numbers for screen width dp are:
+
+320: a phone screen (240x320 ldpi, 320x480 mdpi, 480x800 hdpi, etc).
+480: a tweener tablet like the Streak (480x800 mdpi).
+600: a 7” tablet (600x1024).
+720: a 10” tablet (720x1280, 800x1280, etc).
+
+ */
+
 public class MainActivity extends BaseActivity {
 
-    //Déclaration de tous es composants graphiques
+    //Déclaration de tous les composants graphiques
 
     Button btnCycleVieActivity;
 
@@ -209,11 +221,18 @@ public class MainActivity extends BaseActivity {
     public void btnListClick(View view) {
         Intent listIntent = new Intent(MainActivity.this, MyListActivity.class);
         startActivity(listIntent);
+
     }
 
     //Manipulation d'un Spinner
     public void btnSpinnerClick(View view) {
         Intent intent = new Intent(MainActivity.this, SpinnerActivity.class);
         startActivity(intent);
+    }
+
+    //Exo Panier
+    public void btnCartClick(View view) {
+        Intent cartIntent = new Intent(MainActivity.this, OrderActivity.class);
+        startActivity(cartIntent);
     }
 }

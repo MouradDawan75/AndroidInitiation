@@ -15,6 +15,7 @@ public class Test {
     public void methode1() {
         //variable locale: doit être initialisée
         int y = 0;
+
     }
 
     //méthode (static) de classe

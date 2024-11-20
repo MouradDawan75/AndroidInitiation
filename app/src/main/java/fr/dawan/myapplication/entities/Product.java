@@ -1,6 +1,7 @@
 package fr.dawan.myapplication.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 //Les objets de type Product peuvent être sérialiser
 public class Product implements Serializable {
@@ -51,6 +52,20 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return description + "\n" +price ;
+    }
+
+    //Permet de vérifier l'égalité de 2 Product
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return id == product.id && Double.compare(price, product.price) == 0 && Objects.equals(description, product.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, price);
     }
 }
 /*

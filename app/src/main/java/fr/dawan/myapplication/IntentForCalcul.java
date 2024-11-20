@@ -12,7 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class IntentForCalcul extends AppCompatActivity {
+public class IntentForCalcul extends BaseActivity {
 
     TextView tvNombre1, tvNombre2;
     Button btnAdditionner;

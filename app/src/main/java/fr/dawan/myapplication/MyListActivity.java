@@ -22,7 +22,7 @@ import fr.dawan.myapplication.dialogs.ProductDialog;
 import fr.dawan.myapplication.dialogs.StringDialogList;
 import fr.dawan.myapplication.entities.Product;
 
-public class MyListActivity extends AppCompatActivity {
+public class MyListActivity extends BaseActivity {
 
     ListView lv;
 
