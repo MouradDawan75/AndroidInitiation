@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mon Application</string>
+    <string name="activity_life_cycle">Cycle de vie Activity</string>
+    <string name="explicite_intent_imc_calcul">Explicite Intent (IMC Calcul)</string>
+    <string name="implicite_intent_open_url">Intent Implicite (Ouverture URL)</string>
+    <string name="implicite_intent_call">Intent Implicte (Appel)</string>
+    <string name="implicite_intent_send_sms">Intent Implicite (Envoi d\'un SMS)</string>
+    <string name="implicite_intent_send_email">Intent Implicite (Envoi d\'un mail)</string>
+    <string name="activityforresult_explicite">ActivityForResult Explicite</string>
+    <string name="activityforresult_implicite_image_capture">ActivityForResult Implicite (Capture d\'image)</string>
+    <string name="listview_example">Exemple de ListView</string>
+    <string name="spinner_example">Exemple de Spinner</string>
+    <string name="cart_exo">Exo Panier</string>
+</resources>

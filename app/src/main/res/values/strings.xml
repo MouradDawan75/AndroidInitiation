@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="activity_life_cycle">Activity Life Cycle</string>
+    <string name="explicite_intent_imc_calcul">Explicite Intent (IMC Calcul)</string>
+    <string name="implicite_intent_open_url">Implicite Intent (Open URL)</string>
+    <string name="implicite_intent_call">Implicite Intent (CALL)</string>
+    <string name="implicite_intent_send_sms">Implicite Intent (Send SMS)</string>
+    <string name="implicite_intent_send_email">Implicite Intent (Send EMAIL)</string>
+    <string name="activityforresult_explicite">ActivityForResult Explicite</string>
+    <string name="activityforresult_implicite_image_capture">ActivityForResult Implicite (Image Capture)</string>
+    <string name="listview_example">ListView Example</string>
+    <string name="spinner_example">Spinner Example</string>
+    <string name="cart_exo">Cart Exo</string>
+    <string name="quiz_exercise">Quiz Exercise</string>
 
     <!--Tableau de chaines-->
     <string-array name="countries">
@@ -8,4 +20,5 @@
         <item>Espagne</item>
         <item>USA</item>
     </string-array>
+    <string name="test" translatable="false">tes</string>
 </resources>

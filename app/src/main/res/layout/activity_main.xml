@@ -20,14 +20,14 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Activity Life Cycle"
+        android:text="@string/activity_life_cycle"
         style="@style/buttonStyle"
         android:id="@+id/btn_Activity_lifecycle"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Explicite Intent (IMC Calcul)"
+        android:text="@string/explicite_intent_imc_calcul"
         android:background="@drawable/button_format"
         android:id="@+id/btn_imc_calcul"
         android:onClick="btnImcCalcul"
@@ -36,37 +36,37 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Implicite Intent (Open URL)"
+        android:text="@string/implicite_intent_open_url"
         android:onClick="btnOpenUrlClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Implicite Intent (CALL)"
+        android:text="@string/implicite_intent_call"
         android:onClick="btnCallClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Implicite Intent (Send SMS)"
+        android:text="@string/implicite_intent_send_sms"
         android:onClick="btnSmsClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Implicite Intent (Send EMAIL)"
+        android:text="@string/implicite_intent_send_email"
         android:onClick="btnEmailClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ActivityForResult Explicite"
+        android:text="@string/activityforresult_explicite"
         android:onClick="btnIntentClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ActivityForResult Implicite (Image Capture)"
+        android:text="@string/activityforresult_implicite_image_capture"
         android:onClick="btnCaptureClick"/>
 
     <ImageView
@@ -78,25 +78,25 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ListView Example"
+        android:text="@string/listview_example"
         android:onClick="btnListClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Spinner Example"
+        android:text="@string/spinner_example"
         android:onClick="btnSpinnerClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cart Exo"
+        android:text="@string/cart_exo"
         android:onClick="btnCartClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quiz Exo"
+        android:text="@string/quiz_exercise"
         android:onClick="btnQuizClick"/>
 
 
