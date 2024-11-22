@@ -13,6 +13,25 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_AUDIO"
+        android:minSdkVersion="33" />
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_VIDEO"
+        android:minSdkVersion="33" />
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_IMAGES"
+        android:minSdkVersion="33" />
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" android:minSdkVersion="33"/>
 
     <application
         android:allowBackup="true"
@@ -20,10 +39,43 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".DemoFragmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AlarmManagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PlayMusicActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExecutorServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ThreadActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VolleyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddOrUpdateNoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DatabaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PermissionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SharedPreferenceActivity"
+            android:exported="false"
+            android:theme="@style/MyTheme.MyApplication" />
         <activity
             android:name=".QuizActivity"
             android:exported="false" />
@@ -73,6 +125,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".receivers.MyCustomReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="myAction" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.MusicReceiver" />
+        <receiver android:name=".receivers.AlarmReceiver" />
+        <receiver android:name=".receivers.CancelReceiver"/>
+        <receiver android:name=".receivers.ToastReceiver" />
+
+        <service
+            android:name=".services.MusicService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <provider
+            android:authorities="fr.dawan.myapplication.providers.notes"
+            android:name=".providers.NoteProvider"
+            android:enabled="true"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

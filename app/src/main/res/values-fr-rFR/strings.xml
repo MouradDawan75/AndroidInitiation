@@ -12,4 +12,5 @@
     <string name="listview_example">Exemple de ListView</string>
     <string name="spinner_example">Exemple de Spinner</string>
     <string name="cart_exo">Exo Panier</string>
+    <string name="quiz_exercise">Exo Quiz</string>
 </resources>

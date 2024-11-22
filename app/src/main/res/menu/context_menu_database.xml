@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/action_details"
+        android:title="Détails"
+        android:orderInCategory="1"/>
+
+    <item android:id="@+id/action_add"
+        android:title="Ajouter"
+        android:orderInCategory="2"/>
+
+    <item android:id="@+id/action_delete"
+        android:title="Supprimer"
+        android:orderInCategory="3"/>
+
+    <item   android:id="@+id/action_update"
+        android:title="Mettre à jours"
+        android:orderInCategory="4"/>
+
+</menu>

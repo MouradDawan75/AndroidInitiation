@@ -1,6 +1,12 @@
 package fr.dawan.myapplication.entities;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 //Les objets de type Product peuvent être sérialiser
@@ -66,6 +72,17 @@ public class Product implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, description, price);
+    }
+
+    public static List<Product> fromJson(JSONArray jsonArray) throws Exception {
+        List<Product> lst = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject obj = jsonArray.getJSONObject(i);
+            Product p = new Product(obj.getInt("id"), obj.getString("description"), obj.getDouble("price") );
+            lst.add(p);
+        }
+
+        return lst;
     }
 }
 /*

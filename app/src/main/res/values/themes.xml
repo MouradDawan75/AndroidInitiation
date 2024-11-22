@@ -10,7 +10,9 @@
 
 
         <!--texte et icône -->
-        <item name="colorSecondary">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!--Color on secondary-->
 
         <!--Status bar color-->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
@@ -19,6 +21,12 @@
     </style>
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
+
+    <style name="MyTheme.MyApplication" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+
+
+    </style>
 
     <!--Définir des styles personnalisés
     Fonctionne avec tous les type de Buttons (standard ou AppCompatButton)

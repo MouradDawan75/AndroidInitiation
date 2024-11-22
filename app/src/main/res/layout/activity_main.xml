@@ -99,6 +99,101 @@
         android:text="@string/quiz_exercise"
         android:onClick="btnQuizClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SharedPreferences exmaple"
+        android:onClick="btnSharedClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Internal/External Storage"
+        android:onClick="btnStorageClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Request Permission"
+        android:onClick="btnPermissionClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Database Example"
+        android:onClick="btnDatabaseClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="API Rest Example With Volley"
+        android:onClick="btnVolleyClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Broadcast Receiver example"
+        android:onClick="btnBroadcastClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Custom Receiver example"
+        android:onClick="btnCustomtClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Download Example"
+        android:onClick="btnDownloadClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Download Folder"
+        android:onClick="btnDownloadFolderClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thread Example"
+        android:onClick="btnThreadClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Executor Service + Handler Example"
+        android:onClick="btnExecutorServiceClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Service Example"
+        android:onClick="btnServiceClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AlarmManager Example"
+        android:onClick="btnAlarmClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fragment Example"
+        android:onClick="btnFragmentClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notification Example"
+        android:onClick="btnNotifClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Providers"
+        android:onClick="btnProvidersClick"/>
 
 
     <include layout="@layout/layout_bouton_quitter"/>

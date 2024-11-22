@@ -33,7 +33,7 @@ public class BaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 BaseActivity.this.finishAffinity(); //ferme cette Activity et les Activity filles (mais pas les services)
-                //System.exit(0); ferme tous les composants de l'applications, pas uniquement les Activity
+                //System.exit(0); //ferme tous les composants de l'applications, pas uniquement les Activity
             }
         });
     }

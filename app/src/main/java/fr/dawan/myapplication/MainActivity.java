@@ -1,11 +1,25 @@
 package fr.dawan.myapplication;
 
-import static android.content.Intent.CATEGORY_BROWSABLE;
-
+import android.Manifest;
+import android.app.DownloadManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ProviderInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -13,18 +27,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.graphics.drawable.IconCompat;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
+
+import fr.dawan.myapplication.receivers.CancelReceiver;
+import fr.dawan.myapplication.receivers.MyDownloadReceiver;
+import fr.dawan.myapplication.receivers.MyReceiver;
+import fr.dawan.myapplication.receivers.ToastReceiver;
+import fr.dawan.myapplication.tools.FileTool;
+import fr.dawan.myapplication.tools.PermissionTool;
 
 /*
 Gestion des layout pour les différentes tailles d'écran:
@@ -36,6 +55,11 @@ Typical numbers for screen width dp are:
 600: a 7” tablet (600x1024).
 720: a 10” tablet (720x1280, 800x1280, etc).
 
+Site pour générer des images avec différentes densités:
+https://www.appicon.co/
+
+Copier/coller les dossiers générés à la racine du dossier res
+
  */
 
 public class MainActivity extends BaseActivity {
@@ -46,6 +70,8 @@ public class MainActivity extends BaseActivity {
 
     //Déclaration de l'ActivityForResult
     ActivityResultLauncher<Intent> imageResultat;
+
+    DownloadManager downloadManager;
 
 
 
@@ -145,6 +171,16 @@ public class MainActivity extends BaseActivity {
                     }
                 });
 
+        //Déclaration des Broadcast Receiver:
+        /*
+        Soit dans cette méthode, soit dans le manifest.xml
+        Dans cette méthode, il est recommandé de déclarer les Receiver pour les actions du système Android
+         */
+        registerReceiver(new MyReceiver(), new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(new MyDownloadReceiver(), new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
+        }
+
     }
 
 
@@ -240,4 +276,369 @@ public class MainActivity extends BaseActivity {
     public void btnQuizClick(View view) {
         startActivity(new Intent(MainActivity.this, QuizActivity.class));
     }
+
+
+    /*
+    SharedPreferences:
+    c'est un fichier généré par Android et est accésible dans toute l'application en lecture/écriture
+    On l'utiise pour stocker les types simples de données.
+    La désinstallation de l'appli. implique la suppression de tous les fichiers sharedpreferences générés par
+    l'appli.
+     */
+
+    public void btnSharedClick(View view) {
+        startActivity(new Intent(this, SharedPreferenceActivity.class));
+
+        //Pour modifier le thème du layout:
+        /*
+        Créer un thème perso dans le fichier res: thème
+        L'appliquer dans le manifest.xml
+        Si utilisation d'une image aved différentes densitées:
+        Créer un thème sans la barre d'action
+         */
+    }
+
+
+    /*
+    Stockage interne:
+    - Aucune permission nécessaire dans le manifest
+    - Idéal pour stocker des fichiers propres à 'application (non visibles par les autres appli.)
+    - La désinstallation de l'application implique la suppression de tous les fichiers crées par cette appli.
+
+    2 types de stockages:
+    - getFileDir(): stockage permanent (fichiers conservés tant que l'apllication n'est pas supprimée)
+    - getCacheDir(): fichier supprimés aléatoirement par Android pour libérer de l'espace
+
+    Stockage externe:
+    Nécessite des permissions dans le manifest.
+    - Idéal pour partager des fichiers avec les autres applications
+    - context.getExternalFileDir(): fichiers supprimés si application supprimée
+    - Environement.getExternalPublicDirectory(): fichiers conservés si application supprimée
+
+    Pour utiliser le stockage externe, on doit vérifier son état (disponible ou pas)
+
+    --------- Ecriture -----------
+    *** Pour Android < 12 ( < api 33) - Api >= 33 non nécessaire
+    <uses-permission WRITE_EXTERNAL_STORAGE/>
+
+    --------- Lecture ------------
+    *** Pour Android api >= 33 - aucune permission
+
+    <uses-permission WRITE_EXTERNAL_STORAGE/> api < 33
+
+    api >= 33: on doit préciser le type de fichiers en lecture: audio, video, image
+    Pas mal de permission à gérer:
+    <uses-permission --------- READ_MEDIA_IMAGE
+    <uses-permission --------- READ_MEDIA_VIDEO
+    <uses-permission --------- READ_MEDIA_AUDIO
+
+    Pour Android 10: ajouter dans le manifest.xml:
+    <application
+        android:requestLegacyExternalStorage="true"
+
+     */
+
+    public void btnStorageClick(View view) {
+
+        //Stockage interne
+        Log.i(">>> Sockage interne", getFilesDir().getAbsolutePath());
+        String fileName = "test.txt";
+
+        try {
+            //Ecriture interne
+            FileTool.writeInternalStorage(getFilesDir().getAbsolutePath()+"/"+fileName,"toto \n tata \n titi \n test \n toto \n dawan \n toto");
+            Toast.makeText(this, "Ecriture interne OK", Toast.LENGTH_LONG).show();
+
+            //Lecture interne
+            String contenu = FileTool.readInternaStorage(getFilesDir().getAbsolutePath()+"/"+fileName);
+            Toast.makeText(this, contenu, Toast.LENGTH_LONG).show();
+
+        }catch (Exception e){
+            Log.i(">>>>Exception", e.getMessage());
+            e.printStackTrace();
+        }
+
+        //Stockage externe
+        try {
+            //Ecriture externe
+            FileTool.writeExternalStorage(this, fileName, "External content.......");
+
+            //Lecture externe
+            String content = FileTool.readExternalStorage(this, fileName);
+            Toast.makeText(this, content, Toast.LENGTH_LONG).show();
+
+        }catch (Exception ex){
+            Log.i(">>> Exception", ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+    /*
+    Gestion des permissions
+    2 types de permissions:
+    - Install-time-permission: jusqu'à version (api 22 - android 5), les demandes de permissions s'effectuent
+    au moment de l'installation de l'application. Si le user refuse une des permissions, l'appli. ne sera pas installées
+
+    - runtime-permission: s'exécutent au moment de l'appel de la fonctionnalité
+
+    Depuis Android api >= 23, les autorisations ne sont pas demandées a l'instalation de l'application.
+
+    - permissions normales: s'installent implicitement au moment d'installer l'application (network, data mobile, internet..)
+    - permissions dangereuses: tout ce qui concerne l'accès aux données privées (sms, appels, contacts, gps....)
+
+    - Gestion des permissions dangereuses:
+    * Les déclarer dans le manifest.xml
+    * Dans le code définir une méthode qui demande la permission au user
+    * Vérifier si l'autorisation est déjà accordée. Si elle ne l'ai pas, on demande au user de l'accèpter ou pas
+    via une boite dialogue
+
+     */
+
+    public void btnPermissionClick(View view) {
+        startActivity(new Intent(this, PermissionActivity.class));
+    }
+
+    //Exemple Base de données
+    /*
+    Android = Noyau (linux) + moteur Sqlite
+     */
+    public void btnDatabaseClick(View view) {
+        startActivity(new Intent(this, DatabaseActivity.class));
+    }
+
+    /*
+    Volley est une Api qui permet d'exécuter des requêtes HTTP (appeler des API)
+    https://google.github.io/volley/
+    1- ajouter la dépendence dans build.gradle via le menu file -> project settings -> dependencies -> clic sur + et faire une recherche
+    2-
+    Trois types de contenu possibles  à récupérer:
+     - String
+     - JsonObject
+     - JsonArrayObject
+     */
+    public void btnVolleyClick(View view) {
+        startActivity(new Intent(this, VolleyActivity.class));
+    }
+
+
+    /*
+    Une appli. Android peut reçevoir des messages diffusés soit par Android, soit par d'autres applications.
+    Ces messages sont diffusés lorsque des évenements se produisent. Ex: activation du wifi, batterie faible, boot système....etc
+    Une application doit s'abonner à ce type d'évenement pour recçevoir le message diffusé par l'évent qu'elle surveille.
+
+    Une appli. peut aussi diffuser un message qui sera intércepter par toutes les appli. qui sont à l'écoute.
+
+    Pour s'abonner il suffit de créer une classe qui hérite de la classe BoradcastRecevier.
+    Le Broadcast receiver doit être déclarer soit dans le manifest.xml, soit dans la méthode onCreate
+
+     */
+    public void btnBroadcastClick(View view) {
+        /*
+        Receiver déclaré dans la méthode onCreate
+         */
+        Toast.makeText(this,"Voir receivers/MyReceiver", Toast.LENGTH_LONG).show();
+        Log.i(">>> Broadcast", "MyReceiver.....");
+    }
+
+    /*
+    Exemple d'un méssage diffusé par une application.
+    Toutes les appli. à l'écoute reçoivent ce méssage y compris l'application en question
+    Receiver déclaré dans le manifest.xml
+     */
+    public void btnCustomtClick(View view) {
+        Intent intent = new Intent();
+
+        //Fournir le nom de l'action à utiliser dans le manifest.xml
+        intent.setAction("myAction");
+
+        //Fournir le nom de l'application qui a diffusé le méssage (package name)
+        intent.setPackage("fr.dawan.myapplication");
+
+        //Possibilité d'insérer des données dans l'intent
+        intent.putExtra("data", "données fournies par l'application");
+
+        sendBroadcast(intent);
+        Log.i(">>> Custom broadcast", "méssage diffusé......");
+
+    }
+
+    /*
+    Exemple d'utilisation d service de téléchargment d'Android
+     */
+    public void btnDownloadClick(View view) {
+       downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+       Uri uri = Uri.parse("https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user");
+
+       //DownloadManager gère une pile de requêtes
+        DownloadManager.Request req = new DownloadManager.Request(uri);
+        req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"vscode");
+        req.setAllowedOverRoaming(false); //param qui permet de basculer du wifi vers data mobile
+        downloadManager.enqueue(req);
+        Toast.makeText(this,"Début du téléchargement", Toast.LENGTH_LONG).show();
+    }
+
+    public void btnDownloadFolderClick(View view) {
+        Intent intent = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+        startActivity(intent);
+    }
+
+    /*
+    Android mets fin à une tâche en cours d'exécution si la durée dépasse une limite (entre 20 et 30 secondes)
+    Pour gérer ce type de tâches (tâches dites lentes), il faut les exécuter en arrière plan en utilisant soit
+    un Thread, soit un Thread Pool + un Handler
+     */
+    public void btnThreadClick(View view) {
+        startActivity(new Intent(this, ThreadActivity.class));
+    }
+
+    public void btnExecutorServiceClick(View view) {
+        startActivity(new Intent(this, ExecutorServiceActivity.class));
+    }
+    /*
+    Un Service permet d'exécuter des tâches en arrière plan sans interaction avec UI. Un composant de l'application
+    démarre le service startService() et ce dernier continu son exécution en background même si le composant appelant est détruit.
+    On parle de service illimité qui doit être stoppé explicitement.
+    Ex: jouer de la musique en arrière plan.
+    Un service doit être déclaré dans le manifest.xml
+
+     */
+
+    public void btnServiceClick(View view) {
+        startActivity(new Intent(this, PlayMusicActivity.class));
+    }
+    /*
+    AlaramManager: service système qui fournit un accès au système d'alarme d'Android permettant de
+    planifier l'exécution de tâches.
+     */
+
+    public void btnAlarmClick(View view) {
+        startActivity(new Intent(this, AlarmManagerActivity.class));
+    }
+
+    /*
+    Un Fragment est une partie d'une IHM qui doit être utiisé dans une Activity
+     */
+    public void btnFragmentClick(View view) {
+        startActivity(new Intent(this, DemoFragmentActivity.class));
+    }
+
+
+    /*
+    Notifications: nécessite la permission <uses-permission: VIBRATE/>
+    si Android >= 13 (api 33) ajoutez cette permission <uses-permission POST_NOTIFICATION/>
+    De plus, s'il s'agit d'une permission dangereuse, on doit demander explicitement au user d'autoriser ou pas l'envoi
+    des notifs via une boite de dialogue, car l'envoi est désactivé par défaut.
+
+    Pour Android <= 12: la boite de dilaogue s'affiche automatiquement.
+
+     */
+
+    static final int NOTIFICATION_PERMISSION_CODE = 111;
+
+    public void btnNotifClick(View view) {
+
+        //Récupérer le gestionnaire de notifs
+        NotificationManager notifManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        //Demande d'autorisation si API Android >= 33 (afficher une boite de dialogue)
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            PermissionTool.checkPermission(this, Manifest.permission.POST_NOTIFICATIONS, NOTIFICATION_PERMISSION_CODE);
+        }
+
+        //Si API Android >= 26: un canal est nécessaire pour l'envoi des notifs
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("channel1", "myChannel", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("my Channel");
+            notifManager.createNotificationChannel(channel);
+        }
+
+        //Création d'une large icone:
+        Bitmap largeIcone = BitmapFactory.decodeResource(getResources(),R.drawable.dawan);
+
+        //Création d'un bigText
+        String bigText = "Dawan : un centre engagé\n" +
+                "Transmettre l’envie d’apprendre, de comprendre, de progresser, de partager : c’est ce qui nous motive chaque " +
+                "jour pour améliorer sans cesse l’entreprise, le travail de nos équipes et la satisfaction de nos clients.\n" +
+                "C’est pour cela que nous mettons tout en œuvre pour vous accueillir dans le meilleur des cadres, avec les meilleurs contenus, les meilleurs formateurs, " +
+                "des supports constamment renouvelés et une démarche commerciale résolument innovante.";
+
+        //Création de l'action annuler;
+        Intent cancelIntent = new Intent(this, CancelReceiver.class);
+
+        PendingIntent cancelPending = PendingIntent.getBroadcast(this, 0, cancelIntent, PendingIntent.FLAG_IMMUTABLE);
+        NotificationCompat.Action cancelAction = new NotificationCompat.Action.Builder(IconCompat.createWithResource(this,R.drawable.flotting_icon), "Cancel", cancelPending).build();
+
+        //Création de l'action Toast
+        Intent toastIntent = new Intent(this, ToastReceiver.class);
+        toastIntent.putExtra("data", "Données fournies via la notif......");
+
+        PendingIntent toastPending = PendingIntent.getBroadcast(this, 1, toastIntent, PendingIntent.FLAG_IMMUTABLE);
+        NotificationCompat.Action toastAction = new NotificationCompat.Action.Builder(IconCompat.createWithResource(this,R.drawable.ic_launcher_foreground),"Toast", toastPending).build();
+
+
+
+        //Création de la notification via le builder
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"channel1");
+        builder.setContentTitle("My Notif")
+                .setSmallIcon(R.drawable.ic_launcher_foreground) // smallIcon est obligatoire
+                .setContentText("Welcome, depuis la notif....")
+                .setLargeIcon(largeIcone)
+                .addAction(cancelAction)
+                .addAction(toastAction)
+
+                //.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(largeIcone)); //scrollable
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText)); //écrase contentText et bigPicture
+
+        Notification notif = builder.build();
+
+        notifManager.notify(100, notif);
+
+
+    }
+
+    /*
+    Communications inter applications:
+    ContentProvider: est e seul moyen permettant à des applications de communiquer (de partager du contenu)
+    Un ContentProvider doit être déclaré dans le manifest.xml
+    <provider
+            android:authorities="fr.dawan.myapplication.providers.notes"
+            android:name=".providers.NoteProvider"
+            android:enabled="true"
+            android:exported="true"/>
+
+      URI: content://fr.dawan.myapplication.providers.notes
+     */
+
+
+    public void btnProvidersClick(View view) {
+        //Afficher la listes des ContentProviders
+        List<PackageInfo> pkInfos = getPackageManager().getInstalledPackages(PackageManager.GET_PROVIDERS);
+
+
+        for(PackageInfo pi : pkInfos){
+            ProviderInfo[] providers = pi.providers;
+            if(providers != null){
+            for(ProviderInfo provInfo : providers) {
+
+                if (provInfo.authority != null) {
+                    //authority: uri du provider
+                    Log.i(">>> provider", provInfo.authority + " " + provInfo.enabled);
+
+                }
+            }
+
+            }
+        }
+
+        //Vérification du fonctionnement du ContentProvider
+        //Application appelante: COntentResover
+        ContentResolver resolver = getContentResolver();
+        Uri uri = Uri.parse("content://fr.dawan.myapplication.providers.notes");
+        Cursor cursor = resolver.query(uri,null,null,null,null);
+        while(cursor.moveToNext()){
+            Log.i(">>> Note", cursor.getString(1));
+        }
+        cursor.close();
+    }
+
 }

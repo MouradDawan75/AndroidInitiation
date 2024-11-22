@@ -1,5 +1,17 @@
 package fr.dawan.myapplication;
 
+interface Check{
+     int add(int x, int y);
+}
+
+class MyClass implements  Check{
+
+    @Override
+    public int add(int x, int y) {
+       return  x+y;
+    }
+}
+
 public class Test {
 
     //Pas de l'initialiser, car elle possède une valeur par défaut
@@ -15,7 +27,28 @@ public class Test {
     public void methode1() {
         //variable locale: doit être initialisée
         int y = 0;
+        Test t = new Test();
+        Check c = new MyClass();
+        Check c1 = new Check() {
+            @Override
+            public int add(int x, int y) {
+                return 0;
+            }
+        };
 
+        //String est immuable
+        String s = "test";
+        s.toUpperCase();
+
+        //StringBuilder: muable
+        StringBuilder s1 = new StringBuilder();
+        s1.append("e");
+        s1.toString();
+
+    }
+
+    public int calcul(Check c, int x,int y){
+      return c.add(x,y);
     }
 
     //méthode (static) de classe
